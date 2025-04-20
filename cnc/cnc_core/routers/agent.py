@@ -2,12 +2,12 @@ from typing import Optional
 
 from fastapi import APIRouter
 
-provisioner_router = APIRouter(
+agent_router = APIRouter(
     prefix="/agent",
 )
 
 
-@provisioner_router.get(path="install")
+@agent_router.get(path="install")
 async def install_agent(password: str, version: Optional[str] = None):
     """
     Get latest version of agent. If version is provided, it will install the specified version.
@@ -17,13 +17,13 @@ async def install_agent(password: str, version: Optional[str] = None):
     pass
 
 
-@provisioner_router.get(path="register")
+@agent_router.post(path="register")
 async def register_agent():
     """Register new agent, add new agent record."""
     pass
 
 
-@provisioner_router.get(path="challenge")
+@agent_router.get(path="challenge")
 async def challenge_agent():
     """
     As an agent you must answer a challenge before making any other action.
