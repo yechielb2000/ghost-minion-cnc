@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:latest
+    container_name: cnc-redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./cnc-redis.conf:/usr/local/etc/redis/redis.conf
+    command: [ "sh", "-c", "envsubst < /usr/local/etc/redis/redis.conf > /tmp/redis.conf && redis-server /tmp/redis.conf" ]

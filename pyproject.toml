@@ -1,0 +1,24 @@
+[project]
+name = "cnc"
+version = "0.1.0"
+description = "Command & control panel"
+authors = ["Yechiel Babani <yechielb2000@gmail.com>"]
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "httpx",
+    "sqlalchemy",
+    "pydantic",
+    "kafka-python",
+    "elasticsearch",
+    "redis>=5.2.1",
+]
+
+[tool.uv.workspace]
+members = [
+    "/cnc/cnc-core",
+    "/cnc/data-parser",
+    "/cnc/data-receiver",
+    "/cnc/task-provider",
+    "/ui/backend"
+]
