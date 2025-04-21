@@ -2,6 +2,12 @@ import os
 
 import redis
 from fastapi import FastAPI
+from fastapi import Request
+from redis.asyncio import Redis
+
+
+def get_redis(request: Request) -> Redis:
+    return request.app.state.redis
 
 
 async def create_redis_connection(app: FastAPI):
