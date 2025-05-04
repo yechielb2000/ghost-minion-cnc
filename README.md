@@ -1,2 +1,5 @@
 # ghost-minion-cnc
-server to command &amp; control ghost minion backdoor tool.
+
+Command &amp; control server to manage ghost minion backdoor tool.
+
+----

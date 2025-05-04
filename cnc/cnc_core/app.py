@@ -9,7 +9,7 @@ from cnc.cnc_core.routers.agent import agent_router
 @asynccontextmanager
 async def lifespan(a: FastAPI):
     load_dotenv()
-    await create_redis_connection(a)
+    app.state.redis = await create_redis_connection()
     yield
 
 app = FastAPI()
