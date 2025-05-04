@@ -11,8 +11,8 @@ services:
       POSTGRES_PASSWORD: admin
       POSTGRES_MULTIPLE_DATABASES: postgres:agents,postgres:tasks,postgres:data
     volumes:
-      - ./.dbs/pg-data:/var/lib/postgresql/data
-      - ./.dbs/config:/docker-entrypoint-initdb.d
+      - ./.vol/pg-data:/var/lib/postgresql/data
+      - ./dbs_config:/docker-entrypoint-initdb.d
 
   adminer:
     image: adminer
