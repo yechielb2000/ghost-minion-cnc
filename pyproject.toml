@@ -9,9 +9,7 @@ dependencies = [
     "httpx",
     "sqlalchemy",
     "pydantic",
-    "kafka-python",
     "elasticsearch",
-    "redis>=5.2.1",
 ]
 
 [tool.uv.workspace]
