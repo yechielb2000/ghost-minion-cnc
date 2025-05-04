@@ -1,8 +1,10 @@
 import os
+
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
 Base = declarative_base()
+
 
 def create_db_adapter(env_db_name: str, dialect: str, driver: str):
     """
@@ -25,6 +27,9 @@ def create_db_adapter(env_db_name: str, dialect: str, driver: str):
 
     async def get_db():
         async with session_local() as session:
-            yield session
+            try:
+                yield session
+            finally:
+                session.close()
 
     return engine, session_local, get_db

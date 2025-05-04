@@ -1,0 +1,3 @@
+CREATE DATABASE agents_db;
+CREATE DATABASE data_db;
+CREATE DATABASE tasks_db;
