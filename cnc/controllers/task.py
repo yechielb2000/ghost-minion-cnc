@@ -1,6 +1,6 @@
 from typing import Sequence, List
 
-from sqlalchemy import insert, select, update
+from sqlalchemy import insert, select, update, delete
 from sqlalchemy.orm import Session
 
 from cnc import models, schemas
@@ -13,6 +13,11 @@ class TaskController:
     def create_task(self, task: schemas.TaskCreate) -> None:
         stmt = insert(models.Task)
         self.tasks_db.execute(stmt, task.model_dump())
+        self.tasks_db.commit()
+
+    def delete_task(self, task_id: int) -> None:
+        stmt = delete(models.Task).where(models.Task.id == task_id)
+        self.tasks_db.execute(stmt)
         self.tasks_db.commit()
 
     def get_agent_tasks(self, agent_id: str) -> Sequence[models.Task]:
