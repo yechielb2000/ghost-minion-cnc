@@ -1,6 +1,6 @@
 from cnc.schemas.agent import AgentBase, AgentRead, AgentCreate, AgentUpdate
 from cnc.schemas.data import DataBase, DataRead, DataCreate
-from cnc.schemas.task import TaskBase, TaskRead, TaskCreate
+from cnc.schemas.task import TaskBase, TaskRead, TaskCreate, TaskUpdate
 
 __all__ = [
     'TaskBase',
@@ -13,4 +13,5 @@ __all__ = [
     'DataCreate',
     'TaskCreate',
     'AgentUpdate',
+    'TaskUpdate'
 ]

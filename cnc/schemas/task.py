@@ -16,6 +16,12 @@ class TaskCreate(TaskBase):
     pass
 
 
+class TaskUpdate(BaseModel):
+    id: UUID
+    payload: bytes = None
+    status: TaskStatus = None
+
+
 class TaskRead(TaskBase):
     id: UUID
 

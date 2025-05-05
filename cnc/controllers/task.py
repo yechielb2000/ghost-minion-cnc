@@ -22,14 +22,20 @@ class TaskController:
         self.tasks_db.commit()
 
     def get_agent_tasks(self, agent_id: str) -> Sequence[models.Task]:
-        stmt = select(models.Task).where(
-            models.Task.agent_id == agent_id, models.Task.status == TaskStatus.PENDING).order_by(
-            models.Task.priority.desc()
+        stmt = (
+            select(models.Task)
+            .where(models.Task.agent_id == agent_id, models.Task.status == TaskStatus.PENDING)
+            .order_by(models.Task.priority.desc())
         )
         tasks = self.tasks_db.execute(stmt).scalars().all()
         return tasks
 
-    def update_tasks_status(self, tasks_ids: List[str], status: TaskStatus) -> None:
-        stmt = update(models.Task).where(models.Task.id.in_(tasks_ids)).values(status=status)
-        self.tasks_db.execute(stmt)
+    def update_tasks(self, tasks: List[schemas.TaskUpdate]) -> None:
+        for task in tasks:
+            stmt = (
+                update(models.Task).
+                where(models.Task.id == task.id).
+                values(**task.model_dump(exclude_none=True))
+            )
+            self.tasks_db.execute(stmt)
         self.tasks_db.commit()

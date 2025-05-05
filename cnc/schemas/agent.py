@@ -15,10 +15,8 @@ class AgentCreate(AgentBase):
     pass
 
 
-class AgentUpdate(AgentBase):
+class AgentUpdate(BaseModel):
     last_seen: Optional[datetime] = None
-    first_seen: Optional[datetime] = None
-    challenge_key: Optional[bytes] = None
     is_alive: Optional[bool] = None
 
 
