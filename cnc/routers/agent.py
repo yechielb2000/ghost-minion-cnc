@@ -1,12 +1,12 @@
 from typing import Optional
 
 from fastapi import APIRouter, Depends
-from redis.asyncio import Redis
 
-from pydantic import BaseModel
+from cnc.auth.validate_agent import validate_token
 
 agent_router = APIRouter(
     prefix="/agent",
+    dependencies=[Depends(validate_token)]
 )
 
 
@@ -18,23 +18,3 @@ async def install_agent(password: str, version: Optional[str] = None):
     To install anything you must provide a password. The password is unique per each agent, configured by user.
     """
     pass
-
-
-@agent_router.post(path="register")
-async def register_agent():
-    """Register new agent, add new agent record."""
-    pass
-
-
-class Challenge(BaseModel):
-    agent_id: str
-    key: str
-
-
-@agent_router.post(path="challenge")
-async def challenge_agent(challenge: Challenge):
-    """
-    As an agent you must answer a challenge before making any other action.
-    After succeeding this challenge it can send data and receive its new tasks.
-    """
-
