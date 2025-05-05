@@ -14,6 +14,7 @@ class Task(Base):
     payload = Column(LargeBinary, nullable=False)
     priority = Column(Integer, nullable=False)
     sent = Column(Boolean, nullable=False, default=False)
+    executed = Column(Boolean, nullable=False, default=False)
 
     __table_args__ = (
         CheckConstraint('priority BETWEEN 1 AND 10', name='check_priority_range'),

@@ -12,7 +12,7 @@ services:
       POSTGRES_MULTIPLE_DATABASES: postgres:agents,postgres:tasks,postgres:data
     volumes:
       - ./.vol/pg-data:/var/lib/postgresql/data
-      - ./dbs_config:/docker-entrypoint-initdb.d
+#      - ./dbs_config:/docker-entrypoint-initdb.d
 
   adminer:
     image: adminer
