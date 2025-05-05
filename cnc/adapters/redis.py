@@ -11,7 +11,7 @@ password = os.getenv(f"REDIS_PSWD")
 def get_redis():
     return redis.Redis(
         host=address,
-        port=port,
+        port=int(port),
         username=username,
         password=password,
         decode_responses=True,

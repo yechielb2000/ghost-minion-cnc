@@ -12,7 +12,7 @@ challenge_router = APIRouter(
 )
 
 
-@challenge_router.post("/challenge", response_model=ChallengeResponse)
+@challenge_router.post("", response_model=ChallengeResponse)
 def challenge(request: ChallengeRequest, redis_client=Depends(get_redis)):
     if request.key != EXPECTED_KEY:
         raise HTTPException(status_code=HTTPStatus.FORBIDDEN)

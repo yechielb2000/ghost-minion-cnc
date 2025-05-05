@@ -5,18 +5,17 @@ description = "Command & control panel"
 authors = ["Yechiel Babani <yechielb2000@gmail.com>"]
 dependencies = [
     "fastapi",
-    "uvicorn[standard]",
+    "uvicorn",
     "httpx",
     "sqlalchemy",
     "pydantic",
     "elasticsearch",
+    "asyncpg>=0.30.0",
+    "dotenv>=0.9.9",
+    "redis>=6.0.0",
 ]
 
 [tool.uv.workspace]
 members = [
-    "/cnc/cnc-core",
-    "/cnc/data-parser",
-    "/cnc/data-receiver",
-    "/cnc/task-provider",
-    "/ui/backend"
+    './cnc/',
 ]

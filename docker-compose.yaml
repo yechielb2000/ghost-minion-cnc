@@ -29,12 +29,19 @@ services:
     volumes:
       - ./.cache:/redis_data
 
-  cnc:
-    image: alpine
-    restart: always
+  cnc-service:
+    build: .
     ports:
       - "8000:8000"
-    command: uv run fastapi dev
+    env_file:
+      - .env
+    volumes:
+      - ./cnc:/app/cnc
+      - ./.env:/app/.env
+    command: ./.venv/bin/uvicorn cnc.app:app --host 0.0.0.0 --port 8000 --reload
+    depends_on:
+      - postgres
+      - cnc-cache
 
 
 #  nginx-server:
