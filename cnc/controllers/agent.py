@@ -4,7 +4,7 @@ from typing import Optional
 from sqlalchemy import select, update
 from sqlalchemy.orm import Session
 
-from cnc.cnc_core import models
+from cnc import models
 
 
 class AgentController:
