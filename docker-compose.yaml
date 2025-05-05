@@ -12,7 +12,6 @@ services:
       POSTGRES_MULTIPLE_DATABASES: postgres:agents,postgres:tasks,postgres:data
     volumes:
       - ./.vol/pg-data:/var/lib/postgresql/data
-#      - ./dbs_config:/docker-entrypoint-initdb.d
 
   adminer:
     image: adminer
@@ -20,6 +19,15 @@ services:
     restart: always
     ports:
       - "8080:8080"
+
+  cnc-cache:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PSWD}
+    volumes:
+      - ./.cache:/redis_data
 
 #  nginx-server:
 #    container_name: nginx_server
