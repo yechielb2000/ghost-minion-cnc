@@ -29,6 +29,14 @@ services:
     volumes:
       - ./.cache:/redis_data
 
+  cnc:
+    image: alpine
+    restart: always
+    ports:
+      - "8000:8000"
+    command: uv run fastapi dev
+
+
 #  nginx-server:
 #    container_name: nginx_server
 #    image: nginx
