@@ -1,0 +1,22 @@
+[project]
+name = "cnc"
+version = "0.1.0"
+description = "Command & control panel"
+authors = ["Yechiel Babani <yechielb2000@gmail.com>"]
+dependencies = [
+    "fastapi[all]",
+    "uvicorn",
+    "httpx",
+    "sqlalchemy",
+    "pydantic",
+    "elasticsearch",
+    "asyncpg>=0.30.0",
+    "dotenv>=0.9.9",
+    "redis>=6.0.0",
+    "confluent-kafka>=2.10.0",
+]
+
+[tool.uv.workspace]
+members = [
+    './cnc/',
+]
