@@ -1,17 +1,18 @@
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
 from dotenv import load_dotenv
+from fastapi import FastAPI
 
-from cnc.cnc_core.redis_connect import create_redis_connection
-from cnc.routers import agent_router
+from cnc.adapters import dbs
+
 
 @asynccontextmanager
 async def lifespan(a: FastAPI):
     load_dotenv()
-    app.state.redis = await create_redis_connection()
+    for base, engine in dbs:
+        async with engine.begin() as conn:
+            await conn.run_sync(base.metadata.create_all)
     yield
 
-app = FastAPI()
 
-app.include_router(agent_router)
+app = FastAPI(lifespan=lifespan)

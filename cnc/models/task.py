@@ -1,9 +1,16 @@
+import enum
 import uuid
 
-from sqlalchemy import Column, Integer, Boolean, Index, CheckConstraint, LargeBinary, UUID
+from sqlalchemy import Column, Integer, Index, CheckConstraint, LargeBinary, UUID, Enum
 from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
+
+
+class TaskStatus(str, enum.Enum):
+    EXECUTED = "EXECUTED"
+    PENDING = "PENDING"
+    SENT = "SENT"
 
 
 class Task(Base):
@@ -13,8 +20,7 @@ class Task(Base):
     agent_id = Column(UUID, nullable=False)
     payload = Column(LargeBinary, nullable=False)
     priority = Column(Integer, nullable=False)
-    sent = Column(Boolean, nullable=False, default=False)
-    executed = Column(Boolean, nullable=False, default=False)
+    status = Column(Enum(TaskStatus), nullable=False, default=TaskStatus.PENDING)
 
     __table_args__ = (
         CheckConstraint('priority BETWEEN 1 AND 10', name='check_priority_range'),
