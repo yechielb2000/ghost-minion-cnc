@@ -3,7 +3,7 @@ from typing import Optional
 from fastapi import APIRouter, Depends
 from redis.asyncio import Redis
 
-from cnc.cnc_core.redis_connect import get_redis
+from pydantic import BaseModel
 
 agent_router = APIRouter(
     prefix="/agent",
@@ -26,12 +26,15 @@ async def register_agent():
     pass
 
 
-@agent_router.get(path="challenge/{agent_id}/{key}")
-async def challenge_agent(agent_id: str, key: str, redis: Redis = Depends(get_redis)):
+class Challenge(BaseModel):
+    agent_id: str
+    key: str
+
+
+@agent_router.post(path="challenge")
+async def challenge_agent(challenge: Challenge):
     """
     As an agent you must answer a challenge before making any other action.
     After succeeding this challenge it can send data and receive its new tasks.
     """
-    # TODO: Check if key is equivalent to the agent key in the db.
-    # after accepting the challenge we update redis key of this agent to be authorized.
-    await redis.set(f'{agent_id}_auth', True, ex=300)
+
