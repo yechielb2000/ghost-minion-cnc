@@ -9,5 +9,3 @@ COPY ./pyproject.toml /app
 WORKDIR /app
 
 RUN uv sync --frozen --no-cache
-
-#CMD [".venv/bin/uvicorn", "cnc.app:app", "--host", "0.0.0.0", "--port", "8000"]
