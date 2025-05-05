@@ -29,7 +29,7 @@ def flush_producer():
 
 
 def delivery_callback(err, msg):
-    # TODO: remember to switch log logs
+    # TODO: remember to switch to log messages
     if err:
         print(f"Delivery failed: {err}")
     else:
