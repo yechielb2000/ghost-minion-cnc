@@ -1,10 +1,12 @@
 import datetime
 from typing import Optional
 
+from fastapi import Depends
 from sqlalchemy import select, update
 from sqlalchemy.orm import Session
 
 from cnc import models
+from cnc.adapters.agents_db import get_agents_db
 
 
 class AgentController:
@@ -31,3 +33,7 @@ class AgentController:
         stmt = update(models.Agent).where(models.Agent.id == agent_id).values(is_alive=False)
         self.agents_db.execute(stmt)
         self.agents_db.commit()
+
+
+def get_agent_controller(agents_db=Depends(get_agents_db)):
+    return AgentController(agents_db)
