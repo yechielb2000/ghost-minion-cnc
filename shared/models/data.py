@@ -1,5 +1,4 @@
 import uuid
-from datetime import datetime
 
 from sqlalchemy import Column, String, TIMESTAMP, Index, LargeBinary, UUID, text
 from sqlalchemy.ext.declarative import declarative_base
