@@ -5,7 +5,7 @@ from fastapi import Depends
 from sqlalchemy import select, update
 from sqlalchemy.orm import Session
 
-from cnc import models
+from shared import models
 from shared.adapters.agents_db import get_agents_db
 
 

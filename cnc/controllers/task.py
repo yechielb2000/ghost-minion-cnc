@@ -3,8 +3,9 @@ from typing import Sequence, List
 from sqlalchemy import insert, select, update, delete
 from sqlalchemy.orm import Session
 
-from cnc import models, schemas
-from cnc.models.task import TaskStatus
+from cnc import schemas
+from shared import models
+from shared.models import TaskStatus
 
 
 class TaskController:

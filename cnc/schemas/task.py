@@ -2,7 +2,7 @@ from uuid import UUID
 
 from pydantic import BaseModel, Field
 
-from cnc.models.task import TaskStatus
+from shared.models import TaskStatus
 
 
 class TaskBase(BaseModel):
