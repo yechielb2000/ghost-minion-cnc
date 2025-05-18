@@ -4,7 +4,6 @@ from sqlalchemy import insert, select, update, delete
 from sqlalchemy.orm import Session
 
 from shared import models, schemas
-from shared.models import TaskStatus
 
 
 class TaskController:
@@ -24,7 +23,7 @@ class TaskController:
     def get_agent_tasks(self, agent_id: str) -> Sequence[models.Task]:
         stmt = (
             select(models.Task)
-            .where(models.Task.agent_id == agent_id, models.Task.status == TaskStatus.PENDING)
+            .where(models.Task.agent_id == agent_id, models.Task.status == models.TaskStatus.PENDING)
             .order_by(models.Task.priority.desc())
         )
         tasks = self.tasks_db.execute(stmt).scalars().all()
