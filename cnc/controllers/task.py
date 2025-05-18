@@ -3,8 +3,7 @@ from typing import Sequence, List
 from sqlalchemy import insert, select, update, delete
 from sqlalchemy.orm import Session
 
-from cnc import schemas
-from shared import models
+from shared import models, schemas
 from shared.models import TaskStatus
 
 
