@@ -6,7 +6,12 @@ from confluent_kafka import Producer
 
 
 class KafkaLoggingHandler(logging.Handler):
-    def __init__(self, kafka_bootstrap_servers, topic):
+    def __init__(self, kafka_bootstrap_servers: str, topic: str):
+        """
+        Send logs to kafka with specific topic
+        :param kafka_bootstrap_servers: for example localhost:9092
+        :param topic: just the topic lol
+        """
         super().__init__()
         self.topic = topic
         self.producer = Producer({'bootstrap.servers': kafka_bootstrap_servers})
@@ -34,7 +39,7 @@ class KafkaLoggingHandler(logging.Handler):
         self.producer.flush()
 
 
-def setup_kafka_logger(*, logger_name: str = None, kafka_bootstrap_servers: str, topic: str) -> logging.Logger:
+def setup_kafka_logger(*, kafka_bootstrap_servers: str, topic: str, logger_name: str = None) -> logging.Logger:
     logger = logging.getLogger(logger_name)
     logger.setLevel(logging.DEBUG)
     kafka_handler = KafkaLoggingHandler(kafka_bootstrap_servers, topic)
