@@ -6,7 +6,7 @@ from sqlalchemy import select, update
 from sqlalchemy.orm import Session
 
 from cnc import models
-from cnc.adapters.agents_db import get_agents_db
+from shared.adapters.agents_db import get_agents_db
 
 
 class AgentController:

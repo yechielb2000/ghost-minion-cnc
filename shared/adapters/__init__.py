@@ -1,8 +1,8 @@
-from cnc.adapters.agents_db import AgentsBase, get_agents_db, agents_engine
-from cnc.adapters.data_db import DataBase, get_data_db, data_engine
-from cnc.adapters.mq.kafka import get_kafka_producer, flush_producer
-from cnc.adapters.redis import get_redis
-from cnc.adapters.tasks_db import TasksBase, get_tasks_db, tasks_engine
+from shared.adapters.agents_db import AgentsBase, get_agents_db, agents_engine
+from shared.adapters.data_db import DataBase, get_data_db, data_engine
+from shared.adapters.mq.kafka import get_kafka_producer, flush_producer
+from shared.adapters.redis import get_redis
+from shared.adapters.tasks_db import TasksBase, get_tasks_db, tasks_engine
 
 pg_dbs = [
     (DataBase, data_engine),

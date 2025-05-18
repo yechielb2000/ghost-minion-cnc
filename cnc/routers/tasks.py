@@ -3,7 +3,7 @@ from typing import List
 from fastapi import APIRouter, Depends
 
 from cnc import schemas
-from cnc.adapters import get_tasks_db
+from shared.adapters import get_tasks_db
 from cnc.auth.validate_agent import validate_token
 from cnc.controllers.task import TaskController
 

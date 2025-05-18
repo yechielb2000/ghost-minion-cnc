@@ -5,7 +5,7 @@ from fastapi import Depends, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel
 
-from cnc.adapters.redis import get_redis
+from shared.adapters.redis import get_redis
 
 EXPECTED_KEY = os.getenv("CNC_CHALLENGE_KEY")
 TOKEN_EXPIRATION_SECONDS = 900

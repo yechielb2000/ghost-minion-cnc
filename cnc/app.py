@@ -4,8 +4,8 @@ import uvicorn
 from dotenv import load_dotenv
 from fastapi import FastAPI
 
-from cnc.adapters import pg_dbs
-from cnc.adapters.mq import flush_producer
+from shared.adapters import pg_dbs
+from shared.adapters import flush_producer
 from cnc.routers.challenge import challenge_router
 from cnc.routers.tasks import tasks_router
 

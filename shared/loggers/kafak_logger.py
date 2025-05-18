@@ -1,6 +1,9 @@
-import logging
+import datetime
 import json
+import logging
+
 from confluent_kafka import Producer
+
 
 class KafkaLoggingHandler(logging.Handler):
     def __init__(self, kafka_bootstrap_servers, topic):
@@ -10,9 +13,8 @@ class KafkaLoggingHandler(logging.Handler):
 
     def emit(self, record):
         try:
-            # Format the log record as JSON
             log_entry = {
-                'timestamp': self.formatTime(record),
+                'timestamp': datetime.datetime.now(datetime.UTC).isoformat(),
                 'level': record.levelname,
                 'logger': record.name,
                 'message': record.getMessage(),
@@ -22,41 +24,19 @@ class KafkaLoggingHandler(logging.Handler):
                 'process': record.process,
                 'thread': record.threadName,
             }
-            # Serialize to JSON string
             msg = json.dumps(log_entry)
-
-            # Produce message asynchronously
             self.producer.produce(self.topic, msg.encode('utf-8'))
-            self.producer.poll(0)  # Trigger delivery callbacks
-
+            self.producer.poll(0)
         except Exception:
             self.handleError(record)
 
     def flush(self):
         self.producer.flush()
 
-    def formatTime(self, record, datefmt=None):
-        # You can customize timestamp formatting here
-        import datetime
-        dt = datetime.datetime.utcfromtimestamp(record.created)
-        return dt.isoformat() + "Z"
 
-
-# Usage example
-if __name__ == "__main__":
-    logger = logging.getLogger("my_service")
+def setup_kafka_logger(*, logger_name: str = None, kafka_bootstrap_servers: str, topic: str) -> logging.Logger:
+    logger = logging.getLogger(logger_name)
     logger.setLevel(logging.DEBUG)
-
-    kafka_handler = KafkaLoggingHandler(
-        kafka_bootstrap_servers='localhost:9092',
-        topic='system-logs'
-    )
+    kafka_handler = KafkaLoggingHandler(kafka_bootstrap_servers, topic)
     logger.addHandler(kafka_handler)
-
-    # Optional: also log to console
-    console_handler = logging.StreamHandler()
-    console_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s %(message)s'))
-    logger.addHandler(console_handler)
-
-    logger.info("Service started")
-    logger.error("Something went wrong")
+    return logger

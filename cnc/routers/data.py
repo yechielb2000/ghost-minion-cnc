@@ -4,7 +4,7 @@ from confluent_kafka.cimpl import Producer
 from fastapi import APIRouter, Depends
 
 from cnc import schemas
-from cnc.adapters.mq.kafka import get_kafka_producer, delivery_callback
+from shared.adapters import get_kafka_producer, delivery_callback
 from cnc.auth.validate_agent import validate_token
 
 data_router = APIRouter(
