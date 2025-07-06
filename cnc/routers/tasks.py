@@ -26,6 +26,7 @@ def get_tasks(agent_id: str, tasks_db: TaskController = Depends(get_tasks_db)):
 def update_tasks(tasks: List[TaskUpdate], tasks_db: TaskController = Depends(get_tasks_db)):
     try:
         tasks_db.update_tasks(tasks)
+        return None
     except Exception as e:
         return {"error": str(e)}
 
@@ -34,5 +35,6 @@ def update_tasks(tasks: List[TaskUpdate], tasks_db: TaskController = Depends(get
 def update_tasks(task: TaskUpdate, tasks_db: TaskController = Depends(get_tasks_db)):
     try:
         tasks_db.update_tasks([task])
+        return None
     except Exception as e:
         return {"error": str(e)}
