@@ -1,10 +1,10 @@
-from shared.models.agent import Agent
-from shared.models.data import Data
-from shared.models.task import Task, TaskStatus
+from shared.models.agent import AgentModel
+from shared.models.data import DataModel
+from shared.models.task import TaskModel, TaskStatus
 
 __all__ = [
-    'Agent',
-    'Data',
-    'Task',
+    'AgentModel',
+    'DataModel',
+    'TaskModel',
     'TaskStatus',
 ]

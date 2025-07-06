@@ -13,7 +13,7 @@ class TaskStatus(str, enum.Enum):
     SENT = "SENT"
 
 
-class Task(Base):
+class TaskModel(Base):
     __tablename__ = "tasks"
 
     id = Column(UUID, primary_key=True, default=uuid.uuid4)

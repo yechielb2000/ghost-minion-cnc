@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends
 from cnc.auth.validate_agent import validate_token
 from shared.controllers import TaskController
 from shared.adapters import get_tasks_db
-from shared.schemas.task import TaskUpdate, TaskBase
+from shared.schemas.task import TaskUpdate, Task
 
 tasks_router = APIRouter(
     prefix="/tasks",
@@ -13,7 +13,7 @@ tasks_router = APIRouter(
 )
 
 
-@tasks_router.get("", response_model=TaskBase)
+@tasks_router.get("", response_model=Task)
 def get_tasks(agent_id: str, tasks_db: TaskController = Depends(get_tasks_db)):
     try:
         tasks = tasks_db.get_agent_tasks(agent_id)
