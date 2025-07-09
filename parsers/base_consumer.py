@@ -3,7 +3,7 @@ import sys
 from abc import ABC, abstractmethod
 from typing import List, Dict
 
-from confluent_kafka.cimpl import Message, Consumer
+from confluent_kafka import Message, Consumer
 
 class BaseKafkaConsumer(ABC):
     def __init__(

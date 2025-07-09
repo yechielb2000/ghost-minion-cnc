@@ -16,9 +16,7 @@ class AgentBase(BaseModel):
 
 
 class AgentCreate(AgentBase):
-    id: Optional[UUID] = None  # Optional if UUID is created server-side
-    first_seen: Optional[datetime] = None
-    last_seen: Optional[datetime] = None
+    pass
 
 
 class AgentUpdate(BaseModel):
@@ -30,9 +28,11 @@ class AgentUpdate(BaseModel):
     description: Optional[str] = None
     challenge_key: Optional[bytes] = None
 
+class AgentUpsert(AgentUpdate):
+    id: Optional[UUID] = None
+
 
 class AgentRead(AgentBase):
-    id: UUID
     first_seen: datetime
     last_seen: datetime
 
