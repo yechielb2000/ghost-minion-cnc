@@ -18,4 +18,4 @@ app = FastAPI(lifespan=lifespan)
 app.include_router(router)
 
 if __name__ == '__main__':
-    uvicorn.run("cnc:app", host="0.0.0.0", port=8181)
+    uvicorn.run("agent_crud:app", host="0.0.0.0", port=8181)

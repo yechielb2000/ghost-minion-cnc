@@ -7,7 +7,7 @@ from fastapi import FastAPI
 from shared.adapters import pg_dbs
 from shared.adapters import flush_producer
 from cnc.routers.challenge import challenge_router
-from cnc.routers.tasks import tasks_router
+from services.task_crud.router import router
 
 
 @asynccontextmanager
@@ -22,7 +22,7 @@ async def lifespan(a: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 app.include_router(challenge_router)
-app.include_router(tasks_router)
+app.include_router(router)
 
 if __name__ == '__main__':
     uvicorn.run("cnc:app", host="0.0.0.0", port=8000)

@@ -1,8 +1,10 @@
 from typing import Sequence, List
 
+from fastapi import Depends
 from sqlalchemy import insert, select, update, delete
 from sqlalchemy.orm import Session
 
+from services.task_crud.db import get_tasks_db
 from shared.models.task import TaskModel, TaskStatus
 from shared.schemas.task import TaskCreate, TaskUpdate
 
@@ -39,3 +41,7 @@ class TaskController:
             )
             self.tasks_db.execute(stmt)
         self.tasks_db.commit()
+
+
+def get_task_controller(tasks_db=Depends(get_tasks_db)):
+    return TaskController(tasks_db)
