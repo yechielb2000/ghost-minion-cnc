@@ -9,9 +9,9 @@ services:
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
-      POSTGRES_MULTIPLE_DATABASES: postgres:agents,postgres:tasks,postgres:data
+      POSTGRES_MULTIPLE_DATABASES: postgres:agents,postgres:tasks,postgres:data,postgres:metadata,postgres:users
     volumes:
-      - ./.vol/pg-data:/var/lib/postgresql/data
+      - pg_dbs
 
   adminer:
     image: adminer
@@ -20,14 +20,14 @@ services:
     ports:
       - "8080:8080"
 
-  cnc-cache:
+  redis:
     image: redis:6.2-alpine
     restart: always
     ports:
-      - '6379:6379'
+      - "6379:6379"
     command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PSWD}
     volumes:
-      - ./.cache:/redis_data
+      - redis_data:/redis_data
 
   cnc-service:
     build: .
@@ -44,8 +44,6 @@ services:
       - cnc-cache
 
 
-#  nginx-server:
-#    container_name: nginx_server
-#    image: nginx
-#    ports:
-#      - "8001:80"
+volumes:
+  pg_dbs:
+  redis_data:

@@ -4,7 +4,7 @@ from http import HTTPStatus
 from fastapi import APIRouter, Depends
 from fastapi import HTTPException
 
-from cnc.adapters.redis import get_redis
+from shared.adapters.redis import get_redis
 from cnc.auth.validate_agent import ChallengeRequest, EXPECTED_KEY, TOKEN_EXPIRATION_SECONDS, ChallengeResponse
 
 challenge_router = APIRouter(

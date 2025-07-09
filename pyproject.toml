@@ -15,9 +15,10 @@ dependencies = [
     "redis>=6.0.0",
     "confluent-kafka>=2.10.0",
     "loguru>=0.7.3",
+    "requests>=2.32.4",
 ]
 
 [tool.uv.workspace]
 members = [
-    './cnc/',
+    './cnc/', "cnc_gateway",
 ]
