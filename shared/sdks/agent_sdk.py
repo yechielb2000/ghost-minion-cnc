@@ -6,6 +6,7 @@ import requests
 
 
 class AgentSDK:
+    BASE_URL = 'http://127.0.0.1:8181'
     def __init__(self, base_url: str):
         self.base_url = base_url.rstrip('/')
 
