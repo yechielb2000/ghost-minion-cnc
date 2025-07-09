@@ -4,7 +4,7 @@ from uuid import UUID
 
 from pydantic import BaseModel, constr
 
-class Data(BaseModel):
+class DataBase(BaseModel):
     agent_id: UUID
     task_id: UUID
     data: bytes
@@ -13,11 +13,11 @@ class Data(BaseModel):
     data_type: constr(strip_whitespace=True)
 
 
-class DataCreate(Data):
+class DataCreate(DataBase):
     pass
 
 
-class DataRead(Data):
+class DataRead(DataBase):
     id: UUID
 
     class Config:

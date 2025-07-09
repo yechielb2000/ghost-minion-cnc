@@ -3,15 +3,31 @@ from typing import Optional
 
 from fastapi import Depends
 from sqlalchemy import select, update
+from sqlalchemy.dialects.postgresql import insert as pg_insert
 from sqlalchemy.orm import Session
 
 from shared.adapters.agents_db import get_agents_db
 from shared.models.agent import AgentModel
+from shared.schemas.agent import AgentCreate
 
 
 class AgentController:
     def __init__(self, agents_db: Session):
         self.agents_db = agents_db
+
+    def upsert_agent(self, agent: AgentCreate) -> None:
+        agent_data = agent.model_dump(exclude_none=True, exclude_unset=True)
+
+        stmt = pg_insert(AgentModel).values(**agent_data)
+
+        update_fields = {
+            key: getattr(stmt.excluded, key) for key in agent_data.keys() if key not in {"id", "first_seen"}
+        }
+
+        stmt = stmt.on_conflict_do_update(index_elements=["id"], set_=update_fields)
+
+        self.agents_db.execute(stmt)
+        self.agents_db.commit()
 
     def get_agent(self, agent_id: str) -> Optional[AgentModel]:
         stmt = select(AgentModel).where(AgentModel.id == agent_id)

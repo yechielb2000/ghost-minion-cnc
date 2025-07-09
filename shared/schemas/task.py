@@ -5,14 +5,14 @@ from pydantic import BaseModel, Field
 from shared.models import TaskStatus
 
 
-class Task(BaseModel):
+class TaskBase(BaseModel):
     agent_id: UUID
     payload: bytes
     priority: int = Field(..., ge=1, le=10)
     status: TaskStatus
 
 
-class TaskCreate(Task):
+class TaskCreate(TaskBase):
     pass
 
 
@@ -22,7 +22,7 @@ class TaskUpdate(BaseModel):
     status: TaskStatus = None
 
 
-class TaskRead(Task):
+class TaskRead(TaskBase):
     id: UUID
 
     class Config:

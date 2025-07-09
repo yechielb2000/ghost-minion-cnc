@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends
 
 from cnc.auth.validate_agent import validate_token
 from shared.adapters.mq.kafka import get_kafka_producer, delivery_callback
-from shared.schemas.data import Data
+from shared.schemas.data import DataBase
 
 data_router = APIRouter(
     prefix="/data",
@@ -14,7 +14,7 @@ data_router = APIRouter(
 
 
 @data_router.post("")
-def receive_data(data_list: List[Data], kafka_producer: Producer = Depends(get_kafka_producer)):
+def receive_data(data_list: List[DataBase], kafka_producer: Producer = Depends(get_kafka_producer)):
     for data in data_list:
         kafka_producer.produce(
             topic=data.data_type,

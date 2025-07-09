@@ -1,11 +1,11 @@
-from shared.schemas.agent import AgentBase, AgentRead, AgentCreate, AgentUpdate
-from shared.schemas.data import Data, DataRead, DataCreate
-from shared.schemas.task import Task, TaskRead, TaskCreate, TaskUpdate
+from shared.schemas.agent import Agent, AgentRead, AgentCreate, AgentUpdate
+from shared.schemas.data import DataBase, DataRead, DataCreate
+from shared.schemas.task import TaskBase, TaskRead, TaskCreate, TaskUpdate
 
 __all__ = [
-    'Task',
-    'AgentBase',
-    'Data',
+    'TaskBase',
+    'Agent',
+    'DataBase',
     'DataRead',
     'TaskRead',
     'AgentRead',
