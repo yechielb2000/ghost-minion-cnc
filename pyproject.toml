@@ -20,5 +20,5 @@ dependencies = [
 
 [tool.uv.workspace]
 members = [
-    './cnc/',
+    './cnc/', "cnc_gateway",
 ]

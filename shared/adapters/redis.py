@@ -1,6 +1,6 @@
 import os
 
-import redis
+import redis_client
 
 address = os.getenv(f"REDIS_ADRS")
 port = os.getenv(f"REDIS_PRT")
