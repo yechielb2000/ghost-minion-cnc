@@ -21,7 +21,6 @@ async def lifespan(a: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
-
 app.include_router(challenge_router)
 app.include_router(tasks_router)
 

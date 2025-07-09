@@ -6,6 +6,7 @@ from pydantic import BaseModel, Field
 
 
 class AgentBase(BaseModel):
+    id: UUID
     challenge_key: bytes
     is_alive: bool = True
     tags: List[str] = Field(default_factory=list)

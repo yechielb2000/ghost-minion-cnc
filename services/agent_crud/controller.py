@@ -1,12 +1,13 @@
 import datetime
 from typing import Optional
+from uuid import UUID
 
 from fastapi import Depends
 from sqlalchemy import select, update
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 from sqlalchemy.orm import Session
 
-from shared.adapters.agents_db import get_agents_db
+from services.agent_crud.db import get_agents_db
 from shared.models.agent import AgentModel
 from shared.schemas.agent import AgentCreate
 
@@ -16,12 +17,12 @@ class AgentController:
         self.agents_db = agents_db
 
     def upsert_agent(self, agent: AgentCreate) -> None:
-        agent_data = agent.model_dump(exclude_none=True, exclude_unset=True)
+        data = agent.model_dump(exclude_unset=True, exclude_none=True)
 
-        stmt = pg_insert(AgentModel).values(**agent_data)
+        stmt = pg_insert(AgentModel).values(**data)
 
         update_fields = {
-            key: getattr(stmt.excluded, key) for key in agent_data.keys() if key not in {"id", "first_seen"}
+            key: getattr(stmt.excluded, key) for key in data.keys() if key not in {"id", "first_seen"}
         }
 
         stmt = stmt.on_conflict_do_update(index_elements=["id"], set_=update_fields)
@@ -29,7 +30,7 @@ class AgentController:
         self.agents_db.execute(stmt)
         self.agents_db.commit()
 
-    def get_agent(self, agent_id: str) -> Optional[AgentModel]:
+    def get_agent(self, agent_id: UUID) -> Optional[AgentModel]:
         stmt = select(AgentModel).where(AgentModel.id == agent_id)
         agent = self.agents_db.execute(stmt).one_or_none()
         return agent
@@ -48,6 +49,13 @@ class AgentController:
     def update_not_alive(self, agent_id: str) -> None:
         stmt = update(AgentModel).where(AgentModel.id == agent_id).values(is_alive=False)
         self.agents_db.execute(stmt)
+        self.agents_db.commit()
+
+    def delete_agent(self, agent_id: UUID) -> None:
+        agent = self.agents_db.get(AgentModel, agent_id)
+        if not agent:
+            raise ValueError("Agent not found")
+        self.agents_db.delete(agent)
         self.agents_db.commit()
 
 
