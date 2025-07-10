@@ -5,12 +5,13 @@ from typing import List, Dict
 
 from confluent_kafka import Message, Consumer
 
+
 class BaseKafkaConsumer(ABC):
     def __init__(
             self,
             topics: List[str],
             group_id: str,
-            bootstrap_servers="localhost:9092", # should pass from .env
+            bootstrap_servers="localhost:9092",  # should pass from .env
             auto_offset_reset="earliest"
     ):
         self.running = True
