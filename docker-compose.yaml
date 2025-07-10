@@ -1,4 +1,5 @@
 services:
+
   postgres:
     image: postgres
     container_name: postgres-dbs
@@ -12,6 +13,19 @@ services:
       POSTGRES_MULTIPLE_DATABASES: postgres:agents,postgres:tasks,postgres:data,postgres:users
     volumes:
       - pg_dbs
+
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    ports:
+      - "9000:9000" # S3 API
+      - "9001:9001" # Web UI
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    command: server --console-address ":9001" /data
+    volumes:
+      - minio-data:/data
 
   adminer:
     image: adminer
@@ -30,7 +44,7 @@ services:
       - redis_data:/redis_data
 
 
-
 volumes:
   pg_dbs:
   redis_data:
+  minio-data:
