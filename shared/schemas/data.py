@@ -2,7 +2,10 @@ from datetime import datetime
 from typing import Optional
 from uuid import UUID
 
-from pydantic import BaseModel, constr
+from pydantic import BaseModel
+
+from shared.models.data import DataType
+
 
 class DataBase(BaseModel):
     agent_id: UUID
@@ -10,7 +13,7 @@ class DataBase(BaseModel):
     data: bytes
     collected_at: datetime
     stored_at: Optional[datetime] = None
-    data_type: constr(strip_whitespace=True)
+    data_type: DataType
 
 
 class DataCreate(DataBase):

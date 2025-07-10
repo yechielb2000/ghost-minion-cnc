@@ -1,6 +1,6 @@
 from services.agent_crud.db import AgentsBase, get_agents_db, agents_engine
 from shared.adapters.data_db import DataBase, get_data_db, data_engine
-from shared.adapters.mq.kafka import get_kafka_producer, flush_producer
+from services.data_reciver.kafka_producer import get_kafka_producer, flush_producer
 from shared.adapters.redis import get_redis
 from shared.adapters.tasks_db import TasksBase, get_tasks_db, tasks_engine
 

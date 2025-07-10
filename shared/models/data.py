@@ -13,6 +13,7 @@ class DataType(enum.Enum):
     KEYLOG = 'KEYLOG'
     COMMAND = 'COMMAND'
     TELEMETRY = 'TELEMETRY'
+    FILE = 'FILE'
 
 
 class DataModel(Base):

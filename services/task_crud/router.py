@@ -2,14 +2,13 @@ from typing import List
 
 from fastapi import APIRouter, Depends
 
-from cnc.auth.validate_agent import validate_token
+
 from shared.adapters import get_tasks_db
 from services.task_crud.controller import TaskController
 from shared.schemas.task import TaskUpdate, TaskBase
 
 router = APIRouter(
     prefix="/tasks",
-    dependencies=[Depends(validate_token)]
 )
 
 

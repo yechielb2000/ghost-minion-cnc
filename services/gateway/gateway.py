@@ -8,7 +8,7 @@ from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 
 from balancer import get_next_data_upstream, get_next_task_upstream
-from middlewares.auth_middleware import AuthMiddleware
+from middlewares.auth_middleware import AuthMiddleware, AGENT_HEADER
 from redis_client import get_redis, Redis
 
 redis_client: Redis
@@ -27,7 +27,7 @@ async def lifespan(a: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
-limiter = Limiter(key_func=lambda r: r.headers.get("X-Agent-ID", get_remote_address(r)))
+limiter = Limiter(key_func=lambda r: r.headers.get(AGENT_HEADER, get_remote_address(r)))
 
 app.state.limiter = limiter
 app.add_exception_handler(HTTPStatus.TOO_MANY_REQUESTS, _rate_limit_exceeded_handler)
@@ -38,6 +38,7 @@ app.add_middleware(AuthMiddleware)
 @app.post("/auth")
 async def authorize_agent(agent_id: str):
     """Allow an agent to communicate (stores it in Redis with TTL)."""
+    # TODO: validate agent via agents-db.challenge_key
     await redis_client.set(f"agent:{agent_id}", "1", ex=900)
     return {"status": "authorized", "agent_id": agent_id}
 
@@ -53,7 +54,7 @@ async def proxy_tasks(request: Request):
 
 
 @app.post("/data")
-@limiter.limit("10/second")
+@limiter.limit("5/second")
 async def proxy_data(request: Request):
     upstream = await get_next_data_upstream()
     headers = dict(request.headers)
