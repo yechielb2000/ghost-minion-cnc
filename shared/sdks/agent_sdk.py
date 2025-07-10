@@ -1,7 +1,6 @@
 from http import HTTPStatus
 from typing import Optional
 from uuid import UUID
-
 import requests
 
 
@@ -39,7 +38,7 @@ class AgentSDK:
         """
         url = f"{self.base_url}/agents/{agent_id}"
         resp = requests.delete(url)
-        if resp.status_code == 404:
+        if resp.status_code == HTTPStatus.REQUEST_TIMEOUT:
             return False
         resp.raise_for_status()
         return True
