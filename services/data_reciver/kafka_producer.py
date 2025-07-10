@@ -39,8 +39,7 @@ def send_to_kafka(prdcr: Producer, topic: str, key: str, value: dict):
       value: Message value as dict (will be JSON serialized)
     """
     try:
-        json_value = json.dumps(value)
-        prdcr.produce(topic=topic, key=key, value=json_value)
+        prdcr.produce(topic=topic, key=key, value=json.dumps(value))
         prdcr.poll(0)
     except Exception as e:
         # TODO: change to real log message

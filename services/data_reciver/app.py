@@ -7,7 +7,7 @@ from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Depends, sta
 
 from config import s3_client, S3_BUCKET, MAX_FILE_UPLOAD_SIZE
 from schemas import CompleteUpload
-from services.data_reciver.kafka_producer import get_kafka_producer, flush_producer
+from services.data_reciver.kafka_producer import get_kafka_producer, flush_producer, send_to_kafka
 from shared.schemas import DataCreate
 
 
@@ -58,13 +58,14 @@ async def upload_part(
 @app.post("/complete-upload")
 def complete_upload(payload: CompleteUpload, producer: Producer = Depends(get_kafka_producer)):
     try:
-        result = s3_client.complete_multipart_upload(
+        s3_client.complete_multipart_upload(
             Bucket=S3_BUCKET,
             Key=payload.key,
             UploadId=payload.upload_id,
             MultipartUpload={"Parts": payload.parts}
         )
-        return {"status": "complete", "location": result["Location"]}
+        producer.produce(topic=payload.data_type.value, key=payload.task_id, value=payload.model_dump())
+        producer.poll(0)
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Complete upload error: {e}")
 
@@ -72,7 +73,7 @@ def complete_upload(payload: CompleteUpload, producer: Producer = Depends(get_ka
 @app.post("/data", status_code=status.HTTP_201_CREATED)
 async def receive_data(data: DataCreate, producer: Producer = Depends(get_kafka_producer())):
     try:
-        producer.produce(topic=data.data_type.value, key=data.agent_id, value=data.model_dump())
+        producer.produce(topic=data.data_type.value, key=data.task_id, value=data.model_dump())
         producer.poll(0)
     except Exception as e:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"Error receiving data: {e}")
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Error receiving data: {e}")
