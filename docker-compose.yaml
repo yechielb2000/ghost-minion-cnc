@@ -1,5 +1,14 @@
 services:
 
+  envoy:
+    image: envoyproxy/envoy:v1.32-latest
+    container_name: envoy
+    ports:
+      - "8080:8080"   # external traffic
+      - "9901:9901"   # admin interface
+    volumes:
+      - ./envoy.yaml:/etc/envoy/envoy.yaml:ro
+
   postgres:
     image: postgres
     container_name: postgres-dbs
