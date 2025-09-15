@@ -1,5 +1,7 @@
-from datetime import datetime
-from typing import Optional, Dict
+from __future__ import annotations
+
+import datetime
+from typing import Any
 from uuid import UUID
 
 from pydantic import BaseModel
@@ -7,17 +9,15 @@ from pydantic import BaseModel
 from shared.models.data import DataType, OSType
 
 
-# TODO: should create DataUpdate
-
 class DataMetadata(BaseModel):
     id: UUID
     agent_id: UUID
     task_id: UUID
-    collected_at: datetime
+    collected_at: datetime.datetime
     data_type: DataType
     os_type: OSType
-    stored_at: Optional[datetime] = None
-    extra: Dict[str, any] = {}
+    stored_at: datetime.datetime | None = None
+    extra: dict[str, Any] = {}
 
     class Config:
         orm_mode = True
