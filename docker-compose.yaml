@@ -7,7 +7,7 @@ services:
       - "8080:8080"   # external traffic
       - "9901:9901"   # admin interface
     volumes:
-      - ./envoy.yaml:/etc/envoy/envoy.yaml:ro
+      - ./config/envoy.yaml:/etc/envoy/envoy.yaml:ro
 
   postgres:
     image: postgres
