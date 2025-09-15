@@ -7,7 +7,7 @@ import uvicorn
 from confluent_kafka import Producer
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Depends, status
 
-from config import s3_client, MAX_FILE_UPLOAD_SIZE
+from services.data_receiver.config import s3_client, MAX_FILE_UPLOAD_SIZE
 from services.data_receiver.kafka_producer import get_kafka_producer, flush_producer
 from services.data_receiver.logger import setup_logger
 from shared.models.data import DataType
