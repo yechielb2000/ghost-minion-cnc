@@ -19,9 +19,32 @@ dependencies = [
     "aiohttp>=3.12.13",
     "slowapi>=0.1.9",
     "boto3>=1.39.4",
+    "sqlmodel>=0.0.24",
+    "psycopg2>=2.9.10",
 ]
 
-[tool.uv.workspace]
-members = [
-    './cnc/', "cnc_gateway",
+[tool.ruff.lint]
+select = ["ALL"]  # Enable all rules by default
+ignore = [
+    "D", # Ignore documentation warnings
+    "ANN", # Ignore type annotation warnings temporarily
+    "ERA", # Ignore commented-out code warnings
+    "ARG", # Ignore unused arguments warnings
+    "INP", # Ignore implicit namespace warnings
+    "T20", # Ignore print statements
+    "PLR0913", # Ignore too many arguments warning
+    "C416", # Ignore list comprehension warnings
+    "TC003", # Ignore type checking block
+    "B008", # Ignore dependency injection singelton
+]
+
+[tool.ruff.lint.pycodestyle]
+max-line-length = 122
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[dependency-groups]
+dev = [
+    "ruff>=0.12.11",
 ]

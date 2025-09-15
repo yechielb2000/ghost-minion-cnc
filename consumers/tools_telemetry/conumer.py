@@ -5,7 +5,7 @@ import json
 from typing import Dict
 
 from confluent_kafka import Message
-from parsers.base_consumer import BaseKafkaConsumer
+from consumers.base_consumer import BaseKafkaConsumer
 
 from shared.sdks.agent_sdk import AgentSDK
 

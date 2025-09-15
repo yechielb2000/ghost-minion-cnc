@@ -1,5 +1,25 @@
 services:
 
+  tasks_api:
+      build:
+        context: .
+        dockerfile: services/tasks_api/Dockerfile
+      ports:
+        - "8000:8000"
+      depends_on:
+        - postgres
+      volumes:
+        - ./config.yaml:/app/shared/config/config.yaml:ro
+
+  envoy:
+    image: envoyproxy/envoy:v1.32-latest
+    container_name: envoy
+    ports:
+      - "8080:8080"   # external traffic
+      - "9901:9901"   # admin interface
+    volumes:
+      - ./config/envoy.yaml:/etc/envoy/envoy.yaml:ro
+
   postgres:
     image: postgres
     container_name: postgres-dbs
