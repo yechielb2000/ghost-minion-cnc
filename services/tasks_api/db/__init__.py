@@ -8,7 +8,7 @@ from services.tasks_api.db import models
 # TODO: read from env vars
 # PG_TASKS_DB_NAME=tasks_db
 
-DATABASE_URL = "postgresql+psycopg2://admin:admin@postgres:5432/tasks_db"
+DATABASE_URL = "postgresql+psycopg2://admin:admin@postgres:5432/postgres"
 
 engine = create_engine(DATABASE_URL, echo=True)
 
