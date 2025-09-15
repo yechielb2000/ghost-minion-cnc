@@ -1,10 +1,17 @@
+admin:
+  access_log_path: "/dev/stdout"
+  address:
+    socket_address:
+      address: 0.0.0.0
+      port_value: 9901
+
 static_resources:
   listeners:
     - name: listener_http
       address:
         socket_address:
           address: 0.0.0.0
-          port_value: 8080
+          port_value: 8000
       filter_chains:
         - filters:
             - name: envoy.filters.network.http_connection_manager
@@ -15,31 +22,34 @@ static_resources:
                   name: local_route
                   virtual_hosts:
                     - name: backend
-                      domains: ["*"]
+                      domains: [ "*" ]
                       routes:
-                        - match: { prefix: "/data" }
-                          route:
-                            cluster: data_receiver
-                        - match: { prefix: "/task" }
+                        #                        - match: { prefix: "/data" }
+                        #                          route:
+                        #                            cluster: data_receiver
+                        - match:
+                            prefix: "/tasks"
                           route:
                             cluster: tasks_api
                 http_filters:
                   - name: envoy.filters.http.router
+                    typed_config:
+                      "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
 
   clusters:
-    - name: data_receiver
-      connect_timeout: 0.5s
-      type: STRICT_DNS
-      lb_policy: ROUND_ROBIN
-      load_assignment:
-        cluster_name: data_receiver
-        endpoints:
-          - lb_endpoints:
-              - endpoint:
-                  address:
-                    socket_address:
-                      address: data-receiver
-                      port_value: 5678
+    #    - name: data_receiver
+    #      connect_timeout: 0.5s
+    #      type: STRICT_DNS
+    #      lb_policy: ROUND_ROBIN
+    #      load_assignment:
+    #        cluster_name: data_receiver
+    #        endpoints:
+    #          - lb_endpoints:
+    #              - endpoint:
+    #                  address:
+    #                    socket_address:
+    #                      address: data-receiver
+    #                      port_value: 5678
 
     - name: tasks_api
       connect_timeout: 0.5s
@@ -53,4 +63,4 @@ static_resources:
                   address:
                     socket_address:
                       address: tasks-api
-                      port_value: 5678
+                      port_value: 8001

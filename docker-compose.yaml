@@ -1,22 +1,21 @@
 services:
 
-  tasks_api:
+  tasks-api:
+      container_name: tasks-api
       build:
         context: .
         dockerfile: services/tasks_api/Dockerfile
       ports:
-        - "8000:8000"
+        - "8001:8001"
       depends_on:
         - postgres
-      volumes:
-        - ./config.yaml:/app/shared/config/config.yaml:ro
 
   envoy:
     image: envoyproxy/envoy:v1.32-latest
     container_name: envoy
     ports:
-      - "8080:8080"   # external traffic
-      - "9901:9901"   # admin interface
+      - "8000:8000"
+      - "9901:9901"
     volumes:
       - ./config/envoy.yaml:/etc/envoy/envoy.yaml:ro
 
@@ -32,7 +31,7 @@ services:
       POSTGRES_PASSWORD: admin
       POSTGRES_MULTIPLE_DATABASES: postgres:agents,postgres:tasks,postgres:data,postgres:users
     volumes:
-      - pg_dbs
+      - pg_dbs:/var/lib/postgresql/data
 
   minio:
     image: minio/minio:latest
