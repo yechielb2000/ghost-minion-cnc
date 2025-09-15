@@ -2,11 +2,13 @@ import os
 
 import boto3
 
-S3_ENDPOINT = os.getenv("S3_ENDPOINT", "https://s3.amazonaws.com")
+# TODO: make it configurable and scalable
+
+S3_ENDPOINT = os.getenv("S3_ENDPOINT", "http://localhost:9000")
 S3_ACCESS_KEY = os.getenv("S3_ACCESS_KEY")
 S3_SECRET_KEY = os.getenv("S3_SECRET_KEY")
-S3_REGION = os.getenv("S3_REGION", "us-east-1")
-S3_BUCKET = os.getenv("S3_BUCKET", "my-bucket")
+S3_REGION = os.getenv("S3_REGION", "us-east-1")  # random for now
+
 MAX_FILE_UPLOAD_SIZE = 10 * 1024 * 1024
 
 KAFKA_BOOTSTRAP = os.getenv("KAFKA_BOOTSTRAP", "localhost:9092")
