@@ -1,6 +1,6 @@
-from typing import Generator
+from collections.abc import Generator
 
-from sqlmodel import create_engine, SQLModel, Session
+from sqlmodel import Session, SQLModel, create_engine
 
 # this import is needed to register the tables from models.py
 from services.tasks_api.db import models
@@ -30,6 +30,6 @@ def get_session() -> Generator[Session, None, None]:
 
 
 __all__ = [
-    "init_db",
     "get_session",
+    "init_db",
 ]

@@ -1,9 +1,15 @@
-from services.tasks_api.db.models.task import Task, TaskStatus, TaskCreate, TaskRead, TaskUpdate
+from services.tasks_api.db.models.task import (
+    Task,
+    TaskCreate,
+    TaskRead,
+    TaskStatus,
+    TaskUpdate,
+)
 
 __all__ = [
     "Task",
-    "TaskStatus",
     "TaskCreate",
     "TaskRead",
+    "TaskStatus",
     "TaskUpdate",
 ]

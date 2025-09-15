@@ -33,7 +33,9 @@ ignore = [
     "INP", # Ignore implicit namespace warnings
     "T20", # Ignore print statements
     "PLR0913", # Ignore too many arguments warning
-    "C416" # Ignore list comprehension warnings
+    "C416", # Ignore list comprehension warnings
+    "TC003", # Ignore type checking block
+    "B008", # Ignore dependency injection singelton
 ]
 
 [tool.ruff.lint.pycodestyle]

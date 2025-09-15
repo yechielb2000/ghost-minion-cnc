@@ -1,9 +1,11 @@
+from __future__ import annotations
+
 import datetime
 import enum
 import uuid
 
-from sqlalchemy import LargeBinary, Enum
-from sqlmodel import Field, SQLModel, Column
+from sqlalchemy import Enum, LargeBinary
+from sqlmodel import Column, Field, SQLModel
 
 
 class TaskStatus(str, enum.Enum):

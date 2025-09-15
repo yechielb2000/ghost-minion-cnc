@@ -1,5 +1,8 @@
+from __future__ import annotations
+
 import uuid
 from contextlib import asynccontextmanager
+from typing import Annotated
 
 import uvicorn
 from fastapi import Depends, FastAPI, status
@@ -7,7 +10,7 @@ from fastapi.responses import JSONResponse
 
 from services.tasks_api.db import init_db
 from services.tasks_api.db.controller import TaskController, get_controller
-from services.tasks_api.db.models import TaskStatus, TaskRead, TaskUpdate, TaskCreate
+from services.tasks_api.db.models import TaskCreate, TaskRead, TaskStatus, TaskUpdate
 
 
 @asynccontextmanager
@@ -20,7 +23,7 @@ app = FastAPI(lifespan=lifespan)
 
 
 @app.post("/tasks", response_model=list[TaskRead])
-def create_task(tasks: list[TaskCreate], tasks_db: TaskController = Depends(get_controller)):
+def create_task(*, tasks: list[TaskCreate], tasks_db: Annotated[TaskController, Depends(get_controller)]):
     try:
         created = []
         for task in tasks:
@@ -32,9 +35,10 @@ def create_task(tasks: list[TaskCreate], tasks_db: TaskController = Depends(get_
 
 @app.get("/tasks", response_model=TaskRead, description="Get tasks by agent_id and task_status")
 def get_tasks(
+        *,
         agent_id: uuid.UUID,
         task_status: TaskStatus = TaskStatus.PENDING,
-        tasks_db: TaskController = Depends(get_controller)
+        tasks_db: Annotated[TaskController, Depends(get_controller)],
 ):
     try:
         return tasks_db.get_tasks(agent_id=agent_id, task_status=task_status)
@@ -44,7 +48,7 @@ def get_tasks(
 
 
 @app.delete("/tasks/{task_id}")
-def delete_tasks(task_id: uuid.UUID, tasks_db: TaskController = Depends(get_controller)):
+def delete_tasks(*, task_id: uuid.UUID, tasks_db: Annotated[TaskController, Depends(get_controller)]):
     try:
         return tasks_db.delete_task(task_id)
     except Exception as e:
@@ -53,12 +57,17 @@ def delete_tasks(task_id: uuid.UUID, tasks_db: TaskController = Depends(get_cont
 
 
 @app.put("/tasks/{task_id}")
-def update_tasks(task_id: uuid.UUID, updated_task: TaskUpdate, tasks_db: TaskController = Depends(get_controller)):
+def update_tasks(
+        *,
+        task_id: uuid.UUID,
+        updated_task: TaskUpdate,
+        tasks_db: Annotated[TaskController, Depends(get_controller)]
+):
     try:
         return tasks_db.update_task(task_id, updated_task)
     except Exception as e:
         return JSONResponse(content={"error": str(e)}, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-if __name__ == '__main__':
-    uvicorn.run("tasks_api:app", host="0.0.0.0", port=8000)
+if __name__ == "__main__":
+    uvicorn.run("tasks_api:app", host="127.0.0.1", port=8000)

@@ -1,10 +1,18 @@
+from __future__ import annotations
+
 import uuid
 
 from fastapi import Depends
 from sqlmodel import Session, select
 
 from services.tasks_api.db import get_session
-from services.tasks_api.db.models import Task, TaskStatus, TaskCreate, TaskRead, TaskUpdate
+from services.tasks_api.db.models import (
+    Task,
+    TaskCreate,
+    TaskRead,
+    TaskStatus,
+    TaskUpdate,
+)
 
 
 class TaskController:
@@ -34,8 +42,7 @@ class TaskController:
             .where((Task.agent_id == agent_id) & (Task.status == task_status))
             .order_by(Task.priority.desc())
         )
-        tasks = self.session.exec(stmt).all()
-        return tasks
+        return self.session.exec(stmt).all()
 
     def update_task(self, task_id: uuid.UUID, updated_task: TaskUpdate) -> TaskRead | None:
         task = self.get_task(task_id)
@@ -45,5 +52,5 @@ class TaskController:
         self.session.commit()
 
 
-def get_controller(session=Depends(get_session)):
+def get_controller(session: Session = Depends(get_session)) -> TaskController:
     return TaskController(session)
