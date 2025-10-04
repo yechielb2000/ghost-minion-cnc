@@ -1,4 +1,4 @@
-from shared.loggers.kafka_logger import setup_kafka_logger
+from shared.logger.kafka_logger import setup_kafka_logger
 
 logger = None
 

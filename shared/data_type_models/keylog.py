@@ -2,11 +2,11 @@ import datetime
 
 from sqlmodel import SQLModel
 
+from shared.data_type_models.base_dtm import BaseDTM
 
-class Keylog(SQLModel, table=True):
-    id: int = SQLModel.Field(primary_key=True, index=True)
+
+class Keylog(BaseDTM, table=True):
     keylog: str
-    created_at: datetime.datetime
 
 
 class KeylogCreate(SQLModel):
