@@ -2,12 +2,12 @@ import datetime
 
 from sqlmodel import SQLModel
 
+from shared.data_type_models.base_dtm import BaseDTM
 
-class Command(SQLModel, table=True):
-    id: int = SQLModel.Field(primary_key=True, index=True)
+
+class Command(BaseDTM, table=True):
     command: str
     output: str
-    created_at: datetime.datetime
 
 
 class CommandCreate(SQLModel):
