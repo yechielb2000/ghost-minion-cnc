@@ -1,5 +1,5 @@
 import { api } from "./http";
-import type { Task } from "../models/task";
+import type { Task } from "../models/Task";
 
 // Create Task
 export async function createTask(task: Omit<Task, "id" | "createdAt" | "updatedAt" | "status">) {

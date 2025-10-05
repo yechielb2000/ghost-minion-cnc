@@ -1,7 +1,7 @@
 import { CardContent, Typography, Chip, Box } from "@mui/material";
 import TasksIcon from '../assets/icons/tasksIcon.svg';
 import GenericCard from './card';
-import type { Agent } from '../models/agent';
+import type { Agent } from '../models/Agent';
 
 
 interface AgentCardProps {
