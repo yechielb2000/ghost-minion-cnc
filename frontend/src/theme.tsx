@@ -28,5 +28,10 @@ export const theme = createTheme({
             main: '#F2274C'
         }
     },
-
+    typography: {
+        fontFamily: [
+            'Tomorrow',
+            'sans-serif',
+        ].join(','),
+    },
 });
