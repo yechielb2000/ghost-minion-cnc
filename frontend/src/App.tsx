@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
-import { theme } from './styles/theme';
+import { theme } from './theme';
 import { ThemeProvider } from '@mui/material/styles'
 
 function App() {
