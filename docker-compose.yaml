@@ -1,5 +1,14 @@
 services:
 
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: cnc-ui
+    ports:
+      - "3000:80"
+    restart: unless-stopped
+
   tasks-api:
       container_name: tasks-api
       build:

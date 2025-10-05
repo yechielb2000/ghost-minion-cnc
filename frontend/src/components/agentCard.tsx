@@ -1,6 +1,7 @@
 import { CardContent, Typography, Chip, Box } from "@mui/material";
+import TasksIcon from '../assets/icons/tasksIcon.svg';
 import GenericCard from './card';
-import type { Agent } from '../models/agent';
+import type { Agent } from '../models/Agent';
 
 
 interface AgentCardProps {
@@ -56,6 +57,7 @@ export default function AgentCard({ agent, onClick }: AgentCardProps) {
                 <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: "block" }}>
                     Last seen: {new Date(agent.lastSeen).toLocaleString()}
                 </Typography>
+                <TasksIcon />
             </Box>
         </GenericCard>
     );

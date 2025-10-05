@@ -1,5 +1,5 @@
 import { api } from "./http";
-import type { Agent } from "../models/agent";
+import type { Agent } from "../models/Agent";
 
 // Get one agent
 export async function getAgent(id: string) {
