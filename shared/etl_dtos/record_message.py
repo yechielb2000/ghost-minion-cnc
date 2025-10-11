@@ -15,10 +15,10 @@ class RecordMessage(BaseModel):
     task_id: str
     collected_at: datetime.datetime = Field(default_factory=lambda: datetime.datetime.now(datetime.UTC))
     data: bytes
-    data_type: DataType
+    data_type: DataType | str
     extra: dict[str, Any] = {}
 
-    def create_child_record(self, data: bytes, data_type: DataType, extra: dict[str, Any] = None) -> RecordMessage:
+    def create_child_record(self, data: bytes, data_type: DataType | str, extra: dict[str, Any] = None) -> RecordMessage:
         return RecordMessage(
             parent_record_id=self.record_id,
             record_id=uuid.uuid4(),

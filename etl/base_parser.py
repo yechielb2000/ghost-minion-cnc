@@ -11,7 +11,7 @@ from shared.kafka.producer import RecordProducer
 class BaseParser:
     def __init__(self):
         self.consumer = RecordConsumer(topic=self.topic)
-        self.producer = RecordProducer(topic=self.topic)
+        self.producer = RecordProducer()
 
     @property
     @abstractmethod
@@ -42,7 +42,7 @@ class BaseParser:
 
             for product in products:
                 try:
-                    self.producer.produce(product)
+                    self.producer.produce(product.data_type, product)
                 except Exception as e:
                     logger.exception(f"Error producing product record: {e}")
 
