@@ -1,36 +1,30 @@
 import signal
 import threading
 from collections.abc import Generator
-from typing import List, TypeVar
+from typing import List
 
 from confluent_kafka import Consumer, TopicPartition, KafkaException
-from pydantic import BaseModel
 
 from shared.etl_dtos.data_types import DataType
+from shared.etl_dtos.record_message import RecordMessage
 from shared.logger import logger
 
-T = TypeVar("T", bound=BaseModel)
 
-
-class GenericConsumer:
+class RecordConsumer:
 
     def __init__(
             self,
-            parser_group: str,
             topic: DataType,
-            message_model: type[T],
             batch_size: int = 10,
             poll_timeout: float = 1.0,
             bootstrap_servers: str = 'localhost:9092',
     ):
         """
         :param bootstrap_servers: Kafka bootstrap servers
-        :param parser_group: Consumer group ID (all parser instances for the same topic should share)
         :param topic: Topic to subscribe to (DataType enum)
         :param batch_size: Number of messages to consume in one batch
         :param poll_timeout: Timeout in seconds for each poll
         """
-        self.message_model = message_model
         self.topic = topic.value if hasattr(topic, "value") else str(topic)
         self.batch_size = batch_size
         self.poll_timeout = poll_timeout
@@ -39,7 +33,7 @@ class GenericConsumer:
         self.consumer = Consumer(
             {
                 "bootstrap.servers": bootstrap_servers,
-                "group.id": parser_group,
+                "group.id": f'{topic}-group',
                 "auto.offset.reset": "earliest",
                 "enable.auto.commit": True,
             }
@@ -62,9 +56,9 @@ class GenericConsumer:
         logger.info(f"[Consumer] Received signal {signum}, stopping...")
         self.stop_event.set()
 
-    def consume(self) -> Generator[T, None, None]:
+    def consume(self) -> Generator[RecordMessage, None, None]:
         """
-        Continuously yield new consumed T from Kafka.
+        Continuously yield new consumed RecordMessage from Kafka.
         """
         try:
             while not self.stop_event.is_set():
@@ -79,12 +73,9 @@ class GenericConsumer:
                         raise KafkaException(msg.error())
 
                     try:
-                        yield self.message_model.model_validate_json(msg.value().decode())
+                        yield RecordMessage.model_validate_json(msg.value().decode())
                     except KafkaException:
                         logger.exception(f"[Consumer] Failed to parse message")
         finally:
             logger.info("[Consumer] Closing consumer...")
             self.consumer.close()
-
-
-s

@@ -1,20 +1,17 @@
-import json
-
-from etl.base_consumer import GenericConsumer
+from etl.base_parser import BaseParser
 from shared.data_type_models.telemetry import TelemetryCreate
 from shared.etl_dtos.data_types import DataType
+from shared.etl_dtos.record_message import RecordMessage
 
 
-def main():
-    consumer = GenericConsumer(parser_group='telemetry-group', topic=DataType.TELEMETRY)
-    for record in consumer.consume():
-        raw_telemetry = json.loads(record.data)
-        # check if telemetry already exists, if yes, just update.
-        telemetry = TelemetryCreate(
-            agent_id=record.agent_id,
-        )
-        TelemetryCreate.model_validate_json(record.data)
+class TelemetryParser(BaseParser):
 
+    @property
+    def topic(self) -> DataType:
+        return DataType.TELEMETRY
 
-if __name__ == '__main__':
-    main()
+    def handle_record(self, record: RecordMessage) -> RecordMessage:
+        telemetry = TelemetryCreate(agent_id=record.agent_id)
+        telemetry_db_writer_data_type = f'{record.data_type}-db-writer'
+        child_record = record.create_child_record(telemetry.model_dump_json().encode(), telemetry_db_writer_data_type)
+        return child_record
