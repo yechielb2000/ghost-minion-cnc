@@ -1,7 +1,12 @@
 import React, { useCallback } from 'react';
-import { Box, Typography, FormControlLabel, Checkbox, TextField, Divider, useTheme } from "@mui/material";
-import { Search, Monitor, AccessTime } from '@mui/icons-material';
+import { Box, Typography, FormControlLabel, Checkbox, TextField, Divider, Stack } from "@mui/material";
+import { Monitor, AccessTime } from '@mui/icons-material';
+import dayjs from 'dayjs';
 import { OS_OPTIONS, STATUS_OPTIONS } from '../../models/Agent';
+import AppTextField from '../../components/Inputs/TextField';
+import AppDateTimeRange from '../../components/Inputs/DatetimeRange';
+import Title from '../../components/Title';
+
 
 interface AgentsFiltersSidebarProps {
     filters: Record<string, any>;
@@ -16,24 +21,18 @@ export const AgentsFiltersSidebar = React.memo(({ filters, onChange }: AgentsFil
     }, [filters, onChange]);
 
     // Handler for range inputs (lastSeen min/max)
-    const handleRangeChange = useCallback((key: string, subKey: 'min' | 'max', value: string) => {
-        // Convert input string to number (timestamp) or null
-        const numValue = value ? parseInt(value, 10) : null;
-
-        // Update the specific min/max value within the nested object
-        const newRange = {
-            ...(filters[key] || {}), // Start with existing range object
-            [subKey]: numValue
-        };
-
-        // Remove the key entirely if both min and max are null
-        if (newRange.min === null && newRange.max === null) {
-            const { [key]: _, ...rest } = filters;
-            onChange(rest);
-        } else {
-            onChange({ ...filters, [key]: newRange });
-        }
-    }, [filters, onChange]);
+    const handleRangeChange = useCallback(
+        (key: string, subKey: "min" | "max", value: string | number | null) => {
+            onChange({
+                ...filters,
+                [key]: {
+                    ...filters[key],
+                    [subKey]: value,
+                },
+            });
+        },
+        [filters, onChange]
+    );
 
     const toggleMultiSelect = useCallback((key: string, option: string) => {
         const selected = filters[key] || [];
@@ -50,12 +49,10 @@ export const AgentsFiltersSidebar = React.memo(({ filters, onChange }: AgentsFil
         }
     }, [filters, onChange]);
 
-    const theme = useTheme();
-
     return (
         <Box
-            sx={{
-                p: 3,
+            sx={(theme) => ({
+                paddingLeft: 3,
                 borderRight: "1px solid",
                 borderColor: theme.palette.divider,
                 height: "100%",
@@ -64,34 +61,22 @@ export const AgentsFiltersSidebar = React.memo(({ filters, onChange }: AgentsFil
                 bgcolor: theme.palette.background.default,
                 overflowY: 'auto',
                 transition: 'width 0.3s',
-            }}
+            })}
         >
-            <Typography variant="h5" sx={{ mb: 3, fontWeight: 600, color: theme.palette.primary.main }}>
-                Agent Filters
-            </Typography>
+            <Title title='CNC' />
 
-            <Box sx={{ mb: 3 }}>
-                <Typography variant="subtitle1" sx={{ display: 'flex', alignItems: 'center', mb: 1, fontWeight: 500 }}>
-                    <Search fontSize="small" sx={{ mr: 1 }} /> Hostname / IP
-                </Typography>
-                <TextField
-                    label="Search Hostname"
-                    variant="outlined"
-                    size="small"
-                    fullWidth
+            <Stack spacing={3}>
+                <AppTextField
+                    label='Hostname'
                     value={filters.hostname || ''}
-                    onChange={(e) => handleTextChange("hostname", e.target.value)}
-                    sx={{ mb: 1 }}
+                    onChange={(val) => handleTextChange("hostname", val)}
                 />
-                <TextField
-                    label="Search IP Address"
-                    variant="outlined"
-                    size="small"
-                    fullWidth
+                <AppTextField
+                    label='IP Address'
                     value={filters.ip || ''}
-                    onChange={(e) => handleTextChange("ip", e.target.value)}
+                    onChange={(val) => handleTextChange("ip", val)}
                 />
-            </Box>
+            </Stack>
 
             <Divider sx={{ my: 2 }} />
 
@@ -137,33 +122,34 @@ export const AgentsFiltersSidebar = React.memo(({ filters, onChange }: AgentsFil
 
             <Divider sx={{ my: 2 }} />
 
-            <Box sx={{ mb: 3 }}>
-                <Typography variant="subtitle1" sx={{ display: 'flex', alignItems: 'center', mb: 1, fontWeight: 500 }}>
-                    <AccessTime fontSize="small" sx={{ mr: 1 }} /> Last Seen (Timestamp)
+            <Stack spacing={3}>
+                <Typography
+                    variant="subtitle1"
+                    sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        fontWeight: 500,
+                    }}
+                >
+                    <AccessTime fontSize="small" sx={{ mr: 1 }} /> Last Seen
                 </Typography>
-                <TextField
-                    label="Min Timestamp (e.g., 1700000000000)"
-                    variant="outlined"
-                    size="small"
-                    type="number"
-                    fullWidth
-                    value={filters.lastSeen?.min !== undefined && filters.lastSeen.min !== null ? filters.lastSeen.min : ''}
-                    onChange={(e) => handleRangeChange("lastSeen", "min", e.target.value)}
-                    helperText="Enter milliseconds since epoch"
-                    sx={{ mb: 1 }}
-                />
-                <TextField
-                    label="Max Timestamp (e.g., 1799999999999)"
-                    variant="outlined"
-                    size="small"
-                    type="number"
-                    fullWidth
-                    value={filters.lastSeen?.max !== undefined && filters.lastSeen.max !== null ? filters.lastSeen.max : ''}
-                    onChange={(e) => handleRangeChange("lastSeen", "max", e.target.value)}
-                    helperText="Leave blank for no max/min"
-                />
-            </Box>
 
-        </Box>
+                <AppDateTimeRange
+                    value={{
+                        from: filters.lastSeen?.min ? dayjs(Number(filters.lastSeen.min)) : null,
+                        to: filters.lastSeen?.max ? dayjs(Number(filters.lastSeen.max)) : null,
+                    }}
+                    onChange={(range) => {
+                        onChange({
+                            ...filters,
+                            lastSeen: {
+                                min: range.from ? range.from.valueOf() : null,
+                                max: range.to ? range.to.valueOf() : null,
+                            },
+                        });
+                    }}
+                />
+            </Stack>
+        </Box >
     );
 });

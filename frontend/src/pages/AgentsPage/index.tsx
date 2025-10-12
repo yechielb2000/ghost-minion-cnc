@@ -13,6 +13,11 @@ export default function AgentsPage() {
     const [filters, setFilters] = useState<Record<string, string | string[]>>({});
     const [search, setSearch] = useState("");
 
+    useEffect(() => {
+        fetchAgents();
+        console.log(filters)
+    }, []);
+
     const fetchAgents = useCallback(async () => {
         setLoading(true);
         try {
@@ -33,10 +38,6 @@ export default function AgentsPage() {
             setLoading(false);
         }
     }, [filters, search]);
-
-    useEffect(() => {
-        fetchAgents();
-    }, [fetchAgents]);
 
     return (
         <Grid container>
