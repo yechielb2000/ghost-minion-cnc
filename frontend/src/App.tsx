@@ -13,7 +13,6 @@ function App() {
         <ThemeProvider theme={theme}>
           <AgentsPage />
         </ThemeProvider>
-
       </LocalizationProvider>
     </React.StrictMode>
   )

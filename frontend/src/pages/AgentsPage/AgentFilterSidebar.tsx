@@ -15,24 +15,9 @@ interface AgentsFiltersSidebarProps {
 
 export const AgentsFiltersSidebar = React.memo(({ filters, onChange }: AgentsFiltersSidebarProps) => {
 
-    // Handler for text inputs (hostname, ip)
     const handleTextChange = useCallback((key: string, value: string) => {
         onChange({ ...filters, [key]: value });
     }, [filters, onChange]);
-
-    // Handler for range inputs (lastSeen min/max)
-    const handleRangeChange = useCallback(
-        (key: string, subKey: "min" | "max", value: string | number | null) => {
-            onChange({
-                ...filters,
-                [key]: {
-                    ...filters[key],
-                    [subKey]: value,
-                },
-            });
-        },
-        [filters, onChange]
-    );
 
     const toggleMultiSelect = useCallback((key: string, option: string) => {
         const selected = filters[key] || [];
@@ -50,17 +35,12 @@ export const AgentsFiltersSidebar = React.memo(({ filters, onChange }: AgentsFil
     }, [filters, onChange]);
 
     return (
-        <Box
+        <Stack
+            spacing={3}
             sx={(theme) => ({
                 paddingLeft: 3,
-                borderRight: "1px solid",
-                borderColor: theme.palette.divider,
-                height: "100%",
-                minWidth: 280,
+                borderRight: `2px solid ${theme.palette.primary.main}`,
                 maxWidth: 300,
-                bgcolor: theme.palette.background.default,
-                overflowY: 'auto',
-                transition: 'width 0.3s',
             })}
         >
             <Title title='CNC' />
@@ -78,7 +58,30 @@ export const AgentsFiltersSidebar = React.memo(({ filters, onChange }: AgentsFil
                 />
             </Stack>
 
-            <Divider sx={{ my: 2 }} />
+            <Stack>
+                <Typography
+                    variant="subtitle1"
+                    sx={{ display: "flex", alignItems: "center", fontWeight: 500 }}>
+                    <AccessTime fontSize="small" sx={{ mr: 1 }} /> Last Seen
+                </Typography>
+
+                <AppDateTimeRange
+                    value={{
+                        from: filters.lastSeen?.min ? dayjs(Number(filters.lastSeen.min)) : null,
+                        to: filters.lastSeen?.max ? dayjs(Number(filters.lastSeen.max)) : null,
+                    }}
+                    onChange={(range) => {
+                        onChange({
+                            ...filters,
+                            lastSeen: {
+                                min: range.from ? range.from.valueOf() : null,
+                                max: range.to ? range.to.valueOf() : null,
+                            },
+                        });
+                    }}
+                />
+            </Stack>
+
 
             <Box sx={{ mb: 3 }}>
                 <Typography variant="subtitle1" sx={{ display: 'flex', alignItems: 'center', mb: 1, fontWeight: 500 }}>
@@ -120,36 +123,6 @@ export const AgentsFiltersSidebar = React.memo(({ filters, onChange }: AgentsFil
                 ))}
             </Box>
 
-            <Divider sx={{ my: 2 }} />
-
-            <Stack spacing={3}>
-                <Typography
-                    variant="subtitle1"
-                    sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        fontWeight: 500,
-                    }}
-                >
-                    <AccessTime fontSize="small" sx={{ mr: 1 }} /> Last Seen
-                </Typography>
-
-                <AppDateTimeRange
-                    value={{
-                        from: filters.lastSeen?.min ? dayjs(Number(filters.lastSeen.min)) : null,
-                        to: filters.lastSeen?.max ? dayjs(Number(filters.lastSeen.max)) : null,
-                    }}
-                    onChange={(range) => {
-                        onChange({
-                            ...filters,
-                            lastSeen: {
-                                min: range.from ? range.from.valueOf() : null,
-                                max: range.to ? range.to.valueOf() : null,
-                            },
-                        });
-                    }}
-                />
-            </Stack>
-        </Box >
+        </Stack >
     );
 });

@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import AgentCard from "../../components/AgentCard";
 import type { Agent } from "../../models/Agent";
 
@@ -16,10 +16,10 @@ export default function AgentsList({ agents }: AgentsListProps) {
     }
 
     return (
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            {agents.map((agent) => (
-                <AgentCard key={agent.id} agent={agent} />
-            ))}
-        </Box>
+        <Stack spacing={2}>
+            {
+                agents.map((agent) => <AgentCard key={agent.id} agent={agent} />)
+            }
+        </Stack>
     );
 }

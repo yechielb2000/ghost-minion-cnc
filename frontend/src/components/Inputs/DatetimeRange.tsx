@@ -14,6 +14,7 @@ const AppDateTimeRange: React.FC<AppDateTimeRangeProps> = ({ value, onChange }) 
         <Stack spacing={2} alignItems='center'>
 
             <DateTimePicker
+                label='From'
                 value={value.from}
                 onChange={(val) => onChange({ ...value, from: val })}
                 format="YYYY-MM-DD HH:mm"
@@ -29,9 +30,8 @@ const AppDateTimeRange: React.FC<AppDateTimeRangeProps> = ({ value, onChange }) 
                 }}
             />
 
-            <Typography>→</Typography>
-
             <DateTimePicker
+                label='To'
                 value={value.to}
                 onChange={(val) => onChange({ ...value, to: val })}
                 format="YYYY-MM-DD HH:mm"

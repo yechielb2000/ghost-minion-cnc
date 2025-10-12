@@ -18,10 +18,7 @@ const AppTextField: React.FC<AppTextFieldProps> = ({ label, value, onChange }) =
       sx={(theme) => ({
         "& fieldset": { border: "none" },
         "& .MuiInputLabel-root": {
-          color: theme.palette.redSpecial.main,
-        },
-        "& .MuiInputLabel-root.Mui-focused": {
-          color: theme.palette.secondary.main,
+          color: theme.palette.primary.main,
         },
         borderBottom: `2px solid ${theme.palette.primary.main}`,
       })}

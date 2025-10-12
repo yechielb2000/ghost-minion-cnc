@@ -40,8 +40,8 @@ export default function AgentsPage() {
     }, [filters, search]);
 
     return (
-        <Grid container>
-            <Grid size='auto' marginRight={5}>
+        <Grid container >
+            <Grid size='auto' marginRight={5} height='100%'>
                 <AgentsFiltersSidebar filters={filters} onChange={setFilters} />
             </Grid>
             <Grid size='auto'>

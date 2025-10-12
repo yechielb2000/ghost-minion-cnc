@@ -12,6 +12,7 @@ const Title: React.FC<TitleProps> = ({ title }) => {
                 mb: 3,
                 fontWeight: 600,
                 fontFamily: theme.typography.fontFamily,
+                fontPalette: 'initial',
                 color: theme.palette.primary.main
             })}>
             {title}
