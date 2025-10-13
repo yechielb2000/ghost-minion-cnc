@@ -20,6 +20,6 @@ export default function AgentsList({ agents }: AgentsListProps) {
             {
                 agents.map((agent) => <AgentCard key={agent.id} agent={agent} />)
             }
-        </Stack>
+        </Stack >
     );
 }
