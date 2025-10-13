@@ -9,12 +9,12 @@ const ScrollableStack = styled(Stack)(({ theme }) => ({
         height: 8,
     },
     '&::-webkit-scrollbar-track': {
-        backgroundColor: theme.palette.backgroundPage.main,
+        backgroundColor: theme.palette.background.paper,
     },
     '&::-webkit-scrollbar-thumb': {
         backgroundColor: theme.palette.greySpecial.main,
         borderRadius: 6,
-        border: `3px solid ${theme.palette.backgroundPage.main}`,
+        border: `3px solid ${theme.palette.background.paper}`,
     },
     '&::-webkit-scrollbar-thumb:hover': {
         backgroundColor: theme.palette.primary.dark,

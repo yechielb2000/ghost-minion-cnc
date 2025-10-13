@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { Box, CircularProgress } from "@mui/material"; // Removed ListItem, not used
+import { Box, CircularProgress, colors } from "@mui/material"; // Removed ListItem, not used
 import Grid from "@mui/material/Grid"; // Keep this specific import to avoid type errors
 import { mockAgents } from './MockAgents';
 import { AgentsFiltersSidebar } from "./AgentFilterSidebar";
@@ -40,7 +40,7 @@ export default function AgentsPage() {
     }, [filters, search]);
 
     return (
-        <Grid container>
+        <Grid container sx={(theme) => ({ background: theme.palette.background.paper })}>
             <Grid marginRight={5} height='100vh'>
                 <AgentsFiltersSidebar filters={filters} onChange={setFilters} />
             </Grid>
