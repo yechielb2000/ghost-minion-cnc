@@ -10,8 +10,16 @@ export const CustomChip: React.FC<CustomChipProps> = ({ label }: CustomChipProps
         <Chip
             label={label}
             size="small"
-            color="primary"
             variant="outlined"
-            sx={{ borderRadius: '8px' }} />
+            color="primary"
+            sx={(theme) => ({
+                borderRadius: '8px',
+                ":hover": {
+                    color: 'white',
+                    backgroundColor: theme.palette.primary.main
+                }
+
+            })}
+        />
     );
 }
