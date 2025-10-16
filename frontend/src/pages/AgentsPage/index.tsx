@@ -1,10 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
-import { Box, CircularProgress, colors } from "@mui/material"; // Removed ListItem, not used
-import Grid from "@mui/material/Grid"; // Keep this specific import to avoid type errors
+import AgentsTable from "./AgentsTable";
 import { mockAgents } from './MockAgents';
-import { AgentsFiltersSidebar } from "./AgentFilterSidebar";
-import SearchBar from "../../components/SearchBar";
-import AgentsList from "./AgentsList";
 import type { Agent } from "../../models/Agent";
 
 export default function AgentsPage() {
@@ -40,24 +36,6 @@ export default function AgentsPage() {
     }, [filters, search]);
 
     return (
-        <Grid container sx={(theme) => ({ background: theme.palette.background.paper })}>
-            <Grid marginRight={5} height='100vh'>
-                <AgentsFiltersSidebar filters={filters} onChange={setFilters} />
-            </Grid>
-            <Grid width='50%' justifyContent="center">
-                <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                    <Box mt={10} mb={5}>
-                        <SearchBar value={search} onChange={setSearch} onSearch={fetchAgents} />
-                    </Box>
-                    {loading ? (
-                        <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-                            <CircularProgress />
-                        </Box>
-                    ) : (
-                        <AgentsList agents={agents} />
-                    )}
-                </Box>
-            </Grid>
-        </Grid >
+        <AgentsTable agents={agents} />
     );
 }
