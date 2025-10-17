@@ -8,3 +8,5 @@ const AgentDetailsPage: React.FC<AgentDetailsPageProps> = ({ agent }: AgentDetai
         <></>
     );
 }
+
+export default AgentDetailsPage;

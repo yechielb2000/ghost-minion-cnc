@@ -9,3 +9,5 @@ const AgentTasksPage: React.FC<AgentTasksPageProps> = ({ agent }: AgentTasksPage
         <></>
     );
 }
+
+export default AgentTasksPage;
