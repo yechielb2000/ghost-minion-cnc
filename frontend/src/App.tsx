@@ -4,6 +4,7 @@ import { ThemeProvider } from '@mui/material/styles'
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
 
 function App() {
@@ -11,7 +12,15 @@ function App() {
     <React.StrictMode>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <ThemeProvider theme={theme}>
-          <AgentsPage />
+
+          <Router>
+            <Routes>
+              <Route path="/" element={<Navigate to="/agents" replace />} />
+              <Route path="/agents" element={<AgentsPage />} />
+              <Route path="/agents/:id" element={<AgentDetailsPage />} />
+              <Route path="/agents/:id/tasks" element={<AgentTasksPage />} />
+            </Routes>
+          </Router>
         </ThemeProvider>
       </LocalizationProvider>
     </React.StrictMode>
