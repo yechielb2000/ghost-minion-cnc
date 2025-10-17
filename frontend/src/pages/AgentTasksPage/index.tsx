@@ -1,13 +1,15 @@
-import type { Agent } from "../../models/Agent"
+import { useParams } from "react-router-dom";
+import { CircularProgress, Typography } from "@mui/material";
+import { useAgent } from "../../hooks/useAgent";
 
-interface AgentTasksPageProps {
-    agent: Agent
-}
+export default function AgentTasksPage() {
+    const { id } = useParams<{ id: string }>()
+    const { agent, loading, error } = useAgent(id);
 
-const AgentTasksPage: React.FC<AgentTasksPageProps> = ({ agent }: AgentTasksPageProps) {
+    if (loading) return <CircularProgress />;
+    if (error) return <Typography color="error">{error}</Typography>;
+    if (!agent) return <Typography>Agent not found</Typography>;
     return (
         <></>
     );
 }
-
-export default AgentTasksPage;

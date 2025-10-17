@@ -14,6 +14,7 @@ import {
     FormControl,
     Box,
     Stack,
+    Typography,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs, { Dayjs } from "dayjs";
@@ -21,6 +22,10 @@ import type { Agent } from "../../models/Agent";
 import { STATUS_OPTIONS } from "../../models/Agent";
 import { formatLastSeen } from "../../utils/datatime";
 import { CustomChip } from "../../components/CustomChip";
+import { Link as RouterLink } from 'react-router-dom';
+import ReadMoreIcon from '@mui/icons-material/ReadMore';
+import TaskOutlinedIcon from '@mui/icons-material/TaskOutlined';
+
 
 interface AgentsTableProps {
     agents: Agent[];
@@ -181,6 +186,8 @@ const AgentsTable: React.FC<AgentsTableProps> = ({ agents }) => {
                                     fullWidth
                                 />
                             </TableCell>
+                            <TableCell>
+                            </TableCell>
                         </TableRow>
                     </TableHead>
 
@@ -210,11 +217,34 @@ const AgentsTable: React.FC<AgentsTableProps> = ({ agents }) => {
                                         })}
                                     </Stack>
                                 </TableCell>
+                                <TableCell>
+                                    <Stack spacing={0.5}>
+                                        <RouterLink
+                                            key={agent.id}
+                                            to={`/agents/${agent.id}`}>
+                                            <ReadMoreIcon titleAccess='Agent Info' sx={(theme) => ({
+                                                color: theme.palette.greySpecial.main,
+                                                ":hover": {
+                                                    color: theme.palette.primary.main
+                                                }
+                                            })} />
+                                        </RouterLink>
+                                        <RouterLink
+                                            key={agent.id}
+                                            to={`/agents/${agent.id}/tasks`}>
+                                            <TaskOutlinedIcon titleAccess="Agent Tasks" sx={(theme) => ({
+                                                color: theme.palette.greySpecial.main,
+                                                ":hover": {
+                                                    color: theme.palette.primary.main
+                                                }
+                                            })} />
+                                        </RouterLink>
+                                    </Stack>
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
-
                 <TablePagination
                     component="div"
                     count={filteredAgents.length}
